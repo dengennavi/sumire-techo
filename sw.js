@@ -1,5 +1,5 @@
 // オフライン対応：アプリ本体をキャッシュ。更新時は VERSION を上げる
-const VERSION = "v2-2026-11-04";
+const VERSION = "v3-2026-11-04";
 const FILES = ["./", "index.html", "style.css", "app.js", "calc.js", "rules.js", "config.js", "privacy.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(VERSION).then((c) => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", (e) => {
