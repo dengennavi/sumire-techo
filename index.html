@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>すみれ手帖｜タカラット試算・初観劇ガイド・観劇手帖（宝塚ファン向け非公式ツール）</title>
+<meta name="description" content="宝塚歌劇ファンのための非公式ツール。タカラットの概算とステージ判定、次の集計日までに必要な金額の逆算、初観劇の持ち物・マナー、端末内だけで完結する観劇手帖。ログイン不要。">
+<meta name="theme-color" content="#7b4fc9">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta property="og:title" content="すみれ手帖｜タカラット試算・観劇手帖（非公式）">
+<meta property="og:description" content="次の集計日までに、あといくら？上限も加算タイミングも考慮して逆算。ログイン不要・データは端末内だけ。">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a href="#home" class="brand"><span class="mark" aria-hidden="true">✦</span>すみれ手帖</a>
+  <div class="troupes" role="radiogroup" aria-label="テーマカラー">
+    <button data-t="hana" aria-label="花組テーマ">花</button><button data-t="tsuki" aria-label="月組テーマ">月</button><button data-t="yuki" aria-label="雪組テーマ">雪</button><button data-t="hoshi" aria-label="星組テーマ">星</button><button data-t="sora" aria-label="宙組テーマ">宙</button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="foot">
+  <p>本ツールは個人が運営する<strong>非公式</strong>のファン向けツールです。宝塚歌劇団・阪急電鉄・関係各社とは一切関係ありません。計算結果は概算です。正確なタカラット・ステージは必ず公式マイページでご確認ください。</p>
+  <p id="rulesInfo"></p>
+  <p><a href="privacy.html">プライバシーポリシー・利用規約</a></p>
+</footer>
+
+<nav class="tabs" aria-label="メイン">
+  <a href="#home" data-v="home"><i>⌂</i>ホーム</a>
+  <a href="#calc" data-v="calc"><i>◆</i>試算</a>
+  <a href="#log" data-v="log"><i>✎</i>手帖</a>
+  <a href="#guide" data-v="guide"><i>☆</i>初観劇</a>
+  <a href="#member" data-v="member"><i>♡</i>会員</a>
+</nav>
+<script type="module" src="app.js"></script>
+</body>
+</html>
