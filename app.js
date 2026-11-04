@@ -4,7 +4,7 @@ import { CONFIG } from "./config.js";
 
 // ---------- 保存（端末内のみ） ----------
 const KEY = "sumire-techo-v1";
-const defaults = { troupe: "sora", calc: { tomoJoin: true }, plan: {}, log: [], checklist: {}, customItems: [], member: null };
+const defaults = { troupe: "sora", calc: { tomoJoin: true }, plan: {}, log: [], checklist: {}, customItems: [], line: null };
 let S = load();
 function load() {
   try { return { ...defaults, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch { return { ...defaults }; }
@@ -68,14 +68,14 @@ function home(el) {
   fillCounter(el);
 }
 function memberCta() {
-  if (S.member) return `<div class="card"><b>創立メンバー No.${String(S.member.no).padStart(3, "0")}</b> <span class="muted">${esc(S.member.nickname)} さん</span><div class="row"><a class="btn sm ghost" href="#member">会員証を見る</a></div></div>`;
-  return `<div class="card"><b>創立メンバー 100名募集中</b><div class="muted small">登録すると「集計日の前にお知らせメール」と、番号入りのデジタル会員証が届きます。無料。<span data-counter></span></div><div class="row" style="margin-top:8px"><a class="btn" href="#member">無料で登録する</a></div></div>`;
+  if (S.line?.added) return `<div class="card"><b>LINEで集計日のお知らせを受け取り中</b> <span class="muted small">${esc(S.line.nickname || "")}</span><div class="row"><a class="btn sm ghost" href="#member">創立メンバー証を見る</a></div></div>`;
+  return `<div class="card"><b>創立メンバー 100名募集中</b><div class="muted small">LINEで友だち追加すると、タカラット集計日の約1週間前にお知らせが届きます。無料・ブロックで即解除。<span data-counter></span></div><div class="row" style="margin-top:8px"><a class="btn" href="#member">LINEで受け取る</a></div></div>`;
 }
 async function fillCounter(el) {
-  const slot = el.querySelector("[data-counter]"); if (!slot || !CONFIG.gasUrl) return;
+  const slot = el.querySelector("[data-counter]"); if (!slot || !CONFIG.countUrl) return;
   try {
-    const j = await (await fetch(CONFIG.gasUrl + "?action=count")).json();
-    slot.innerHTML = ` <b>残り ${Math.max(0, CONFIG.memberGoal - j.count)} 枠</b>`;
+    const j = await (await fetch(CONFIG.countUrl)).json();
+    if (j.count != null) slot.innerHTML = ` <b>残り ${Math.max(0, CONFIG.memberGoal - j.count)} 枠</b>`;
   } catch {}
 }
 
@@ -279,71 +279,65 @@ function dayView(el) {
   $("#na").onclick = () => { const v = $("#ni").value.trim(); if (v && !S.customItems.includes(v)) { S.customItems.push(v); save(); route(); } };
 }
 
-// ---------- 会員 ----------
+// ---------- 会員（LINE公式アカウント） ----------
 function member(el) {
-  if (S.member) return memberCard(el);
+  const ready = !!CONFIG.lineAddUrl;
+  const qr = CONFIG.lineBasicId ? `https://qr-official.line.me/sid/L/${encodeURIComponent(CONFIG.lineBasicId.replace(/^@/, ""))}.png` : "";
   el.innerHTML = `
-    <h1>創立メンバー登録（無料）</h1>
+    <h1>創立メンバー（無料）</h1>
     <div class="card">
-      <p style="margin-top:0"><b>先着100名の「創立メンバー」を募集しています。</b></p>
+      <p style="margin-top:0"><b>LINEで友だち追加するだけ。先着100名の「創立メンバー」を募集しています。</b></p>
       <ul class="small" style="padding-left:20px">
-        <li>タカラット<b>集計日の約1週間前</b>にお知らせメール（年4回＋α）</li>
-        <li>番号入りデジタル会員証（No.001〜100）</li>
-        <li>新機能を先に試せる・要望を直接届けられる</li>
+        <li>タカラット<b>集計日の約1週間前</b>にお知らせ（年4回＋締切が近いときだけ）</li>
+        <li>オンライン購入の加算タイミングなど、知らないと損する締切情報</li>
+        <li>新機能を先に試せる・要望をLINEで直接届けられる</li>
       </ul>
-      <p class="muted small" style="margin:0">試算や観劇手帖の内容はサーバーに送られません。登録で送るのはニックネーム・メールアドレス・好きな組だけです。いつでも配信停止できます。</p>
+      <p class="muted small" style="margin:0">試算や観劇手帖の内容はLINEにも運営にも送られません。配信が不要になったらブロックするだけで止まります。</p>
     </div>
-    ${CONFIG.gasUrl ? `
-    <form class="card" id="mf">
-      <label>ニックネーム</label><input type="text" name="nickname" required maxlength="20" autocomplete="nickname">
-      <label>メールアドレス</label><input type="email" name="email" required autocomplete="email" inputmode="email">
-      <label>好きな組（任意）</label><select name="troupe"><option value="">—</option>${Object.entries(TROUPES).map(([k, v]) => `<option value="${k}" ${k === S.troupe ? "selected" : ""}>${v}</option>`).join("")}</select>
-      <label class="check"><input type="checkbox" name="consent" required><span class="small"><a href="privacy.html" target="_blank">プライバシーポリシー・利用規約</a>に同意します</span></label>
-      <div style="margin-top:12px"><button class="btn" id="mb">登録する</button></div>
-      <p id="msg" class="small"></p>
-    </form>` : `<div class="warn">登録受付の準備中です。もうしばらくお待ちください。</div>`}`;
-  const f = $("#mf", el); if (!f) return;
-  f.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const body = Object.fromEntries(new FormData(f)); body.consent = !!body.consent; body.ref = new URLSearchParams(location.search).get("ref") || "";
-    $("#mb").disabled = true; $("#msg").textContent = "送信中…";
-    try {
-      const res = await fetch(CONFIG.gasUrl, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) });
-      const j = await res.json();
-      if (!j.ok) throw new Error(j.error || "登録できませんでした");
-      S.member = { no: j.no, nickname: body.nickname, troupe: body.troupe }; save(); route();
-    } catch (err) { $("#msg").textContent = String(err.message || err); $("#mb").disabled = false; }
-  });
+    ${ready ? `
+      <a class="btn" id="add" href="${esc(CONFIG.lineAddUrl)}" target="_blank" rel="noopener" style="background:#06c755;color:#fff">LINEで友だち追加</a>
+      ${qr ? `<div class="card" style="text-align:center"><div class="muted small">パソコンの方はスマホで読み取り</div><img src="${qr}" alt="LINE友だち追加QRコード" width="180" height="180" loading="lazy"></div>` : ""}
+    ` : `<div class="warn">LINEでの受付を準備中です。もうしばらくお待ちください。</div>`}
+    <div id="card"></div>`;
+  $("#add", el)?.addEventListener("click", () => { S.line = { ...(S.line || {}), added: true }; save(); setTimeout(() => renderCard($("#card")), 300); });
+  if (S.line?.added) renderCard($("#card", el));
 }
 
-function memberCard(el) {
-  const m = S.member, no = String(m.no).padStart(3, "0");
+function renderCard(box) {
+  if (!box) return;
+  const m = S.line || {};
   const url = CONFIG.siteUrl || location.origin + location.pathname;
-  const text = `すみれ手帖の創立メンバー No.${no} になりました。タカラットの試算と観劇手帖が使える非公式ツール（無料・ログイン不要）`;
-  el.innerHTML = `
-    <h1>デジタル会員証</h1>
-    <canvas id="cv" width="1080" height="680" aria-label="会員証 No.${no}"></canvas>
+  const text = `すみれ手帖の創立メンバーになりました。タカラットの試算と観劇手帖が使える非公式ツール（無料・ログイン不要）`;
+  box.innerHTML = `
+    <h2>創立メンバー証</h2>
+    <p class="muted small">友だち追加ありがとうございます。シェア用の画像を作れます（この端末の中だけで作成）。</p>
+    <label>カードに入れる名前（任意）</label><input type="text" id="nick" maxlength="16" value="${esc(m.nickname || "")}" placeholder="ニックネーム">
+    <canvas id="cv" width="1080" height="680" aria-label="創立メンバー証" style="margin-top:12px"></canvas>
     <div class="row" style="margin-top:12px">
       <button class="btn sm" id="sh">画像を保存・シェア</button>
-      <a class="btn sm ghost" target="_blank" rel="noopener" href="https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url + "?ref=" + no)}&hashtags=${encodeURIComponent(CONFIG.hashtag)}">Xでシェア</a>
-    </div>
-    <p class="muted small">シェアされたリンクから登録があると、紹介者としてカウントされます。</p>`;
-  const cv = $("#cv"), g = cv.getContext("2d");
-  const st = getComputedStyle(document.documentElement), ac = st.getPropertyValue("--accent").trim();
-  const grd = g.createLinearGradient(0, 0, 1080, 680); grd.addColorStop(0, ac); grd.addColorStop(1, "#1f1a24");
-  g.fillStyle = grd; g.fillRect(0, 0, 1080, 680);
-  g.strokeStyle = "rgba(255,255,255,.5)"; g.lineWidth = 3; g.strokeRect(36, 36, 1008, 608);
-  g.fillStyle = "#fff"; g.font = "700 44px system-ui,sans-serif"; g.fillText("✦ すみれ手帖", 80, 130);
-  g.font = "600 30px system-ui,sans-serif"; g.fillText("FOUNDING MEMBER", 80, 250);
-  g.font = "800 150px system-ui,sans-serif"; g.fillText("No." + no, 80, 410);
-  g.font = "600 44px system-ui,sans-serif"; g.fillText(m.nickname, 80, 520);
-  g.font = "400 30px system-ui,sans-serif"; g.fillText((TROUPES[m.troupe] ? TROUPES[m.troupe] + "推し ・ " : "") + "非公式ファンツール", 80, 590);
-  $("#sh").onclick = () => cv.toBlob(async (b) => {
-    const file = new File([b], `sumire-member-${no}.png`, { type: "image/png" });
+      <a class="btn sm ghost" target="_blank" rel="noopener" href="https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent(CONFIG.hashtag)}">Xでシェア</a>
+    </div>`;
+  const cv = $("#cv", box), g = cv.getContext("2d");
+  const draw = () => {
+    const ac = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    const grd = g.createLinearGradient(0, 0, 1080, 680); grd.addColorStop(0, ac); grd.addColorStop(1, "#1f1a24");
+    g.fillStyle = grd; g.fillRect(0, 0, 1080, 680);
+    g.strokeStyle = "rgba(255,255,255,.5)"; g.lineWidth = 3; g.strokeRect(36, 36, 1008, 608);
+    g.fillStyle = "#fff"; g.font = "700 44px system-ui,sans-serif"; g.fillText("✦ すみれ手帖", 80, 130);
+    g.font = "600 32px system-ui,sans-serif"; g.fillText("FOUNDING MEMBER", 80, 270);
+    g.font = "800 110px system-ui,sans-serif"; g.fillText("創立メンバー", 80, 400);
+    g.font = "600 48px system-ui,sans-serif"; g.fillText(S.line?.nickname || "", 80, 510);
+    g.font = "400 30px system-ui,sans-serif"; g.fillText((TROUPES[S.troupe] ? TROUPES[S.troupe] + "カラー ・ " : "") + "非公式ファンツール", 80, 590);
+  };
+  draw();
+  $("#nick", box).addEventListener("input", (e) => { S.line = { ...(S.line || {}), nickname: e.target.value }; save(); draw(); });
+  $("#sh", box).onclick = () => cv.toBlob(async (b) => {
+    const file = new File([b], "sumire-founding-member.png", { type: "image/png" });
     if (navigator.canShare?.({ files: [file] })) { try { await navigator.share({ files: [file], text }); return; } catch {} }
     const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = file.name; a.click();
   });
 }
+
 
 // ---------- 起動 ----------
 applyTheme();

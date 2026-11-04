@@ -5,7 +5,8 @@
 - `rules.js` … タカラット制度の数値（出典・確認日つき）。制度が変わったらここだけ直す
 - `calc.js` … 計算ロジック（DOM非依存）
 - `app.js` … 画面
-- `gas/Code.gs` … 会員登録・リマインドメール（Google Apps Script）
+- `gas/line-count.gs` … （任意）LINE友だち数の表示用中継
+- `docs/LINE_MESSAGES.md` … LINE予約配信の文面
 - `docs/PLAN.md` … 90日計画 / `docs/SETUP.md` … 公開手順
 
 ```
