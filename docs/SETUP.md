@@ -1,11 +1,23 @@
 # 公開手順（すべて無料）
 
+## 現在の状況（2026-11-04）
+| 項目 | 状態 |
+|---|---|
+| サイト公開 | ✅ https://dengennavi.github.io/sumire-techo/ （GitHub Pages、main に push で反映） |
+| LINE公式アカウント | ✅ 開設済み「すみれ手帖（非公式）」 @454lqgkx（ビジネスマネージャーの組織は新規「すみれ手帖（非公式）」、連絡先メールは negocar.info@gmail.com） |
+| サイト↔LINE接続 | ✅ 会員ページに友だち追加ボタン（https://line.me/R/ti/p/@454lqgkx）とQR |
+| LINEのあいさつ文・予約配信 | ⬜ 未設定（文面は docs/LINE_MESSAGES.md） |
+| LINEのプロフィール（非公式の明記・アイコン） | ⬜ 未設定 |
+| 友だち数の表示（gas/line-count.gs） | ⬜ 任意・未設定 |
+| X | ⬜ 保留（運営用Gmailの作成がGoogleのSMS確認で通らず中断） |
+
+
 ## 1. LINE公式アカウントを作る（無料・約10分）
-1. https://www.lycbiz.com/jp/service/line-official-account/ から「アカウントの開設」（個人でOK・未認証アカウントで可）
+1. https://entry.line.biz/start/jp/ から開設。**いつものLINEのログインでOK・新しいGmailは不要**。ほかの事業のアカウントとは別物として作られる（混ざらない）
    - アカウント名：すみれ手帖（非公式）／業種：個人・趣味
    - プロフィールに「宝塚歌劇団・阪急電鉄とは関係のない個人運営の非公式ツールです」と書く
-2. 管理画面 → ホーム → 友だちを増やす → 友だち追加ガイド → **URL（https://lin.ee/…）** と **ベーシックID（@…）** を控える
-3. `config.js` の `lineAddUrl` と `lineBasicId` に入れる
+2. 管理画面の左上に出る **ベーシックID（@…）** を控える
+3. `config.js` の `lineBasicId` と、`lineAddUrl`（`https://line.me/R/ti/p/@…` で可）に入れる
 4. あいさつメッセージを `docs/LINE_MESSAGES.md` の「あいさつ」に差し替え
 5. 予約配信：同じファイルの配信文を日付どおりに予約しておく（以後ほぼ放置でOK）
 6. 料金プランは無料の「コミュニケーションプラン」（無料メッセージ通数の上限は管理画面で確認）。100名×月1〜2通なら収まる見込み
