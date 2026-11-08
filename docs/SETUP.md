@@ -1,16 +1,16 @@
 # 公開手順（すべて無料）
 
-## 現在の状況（2026-11-04）
+## 現在の状況（2026-11-08）
 | 項目 | 状態 |
 |---|---|
 | サイト公開 | ✅ https://dengennavi.github.io/sumire-techo/ （GitHub Pages、main に push で反映） |
-| LINE公式アカウント | ✅ 開設済み「すみれ手帖（非公式）」 @454lqgkx（ビジネスマネージャーの組織は新規「すみれ手帖（非公式）」、連絡先メールは negocar.info@gmail.com） |
+| LINE公式アカウント | ✅ 開設済み「すみれ手帖（非公式）」 @454lqgkx |
 | サイト↔LINE接続 | ✅ 会員ページに友だち追加ボタン（https://line.me/R/ti/p/@454lqgkx）とQR |
-| LINEのあいさつ文・予約配信 | ⬜ 未設定（文面は docs/LINE_MESSAGES.md） |
-| LINEのプロフィール（非公式の明記・アイコン） | ⬜ 未設定 |
+| LINEのプロフィール | ✅ アイコン・ステータスメッセージ（11/8）。アカウント名に「（非公式）」 |
+| LINEのあいさつ文・予約配信 | ❓ 設定したか未確認（文面は docs/LINE_MESSAGES.md） |
 | 友だち数の表示（gas/line-count.gs） | ⬜ 任意・未設定 |
-| X | ⬜ 保留（運営用Gmailの作成がGoogleのSMS確認で通らず中断） |
-
+| X | ✅ @sumire_techo（11/8開設。Xはブラウザの自動翻訳をかけない。かかると投稿の文字が化けて見える） |
+| Google Search Console | ✅ URLプレフィックスで登録（google68e4de3ec3c192db.html、削除しない）。sitemap.xml 送信、解説ページ2本のインデックス登録をリクエスト（11/8） |
 
 ## 1. LINE公式アカウントを作る（無料・約10分）
 1. https://entry.line.biz/start/jp/ から開設。**いつものLINEのログインでOK・新しいGmailは不要**。ほかの事業のアカウントとは別物として作られる（混ざらない）

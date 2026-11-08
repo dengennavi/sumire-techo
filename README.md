@@ -11,7 +11,7 @@
 - `app.js` … 画面
 - `gas/line-count.gs` … （任意）LINE友だち数の表示用中継
 - `docs/LINE_MESSAGES.md` … LINE予約配信の文面
-- `docs/PLAN.md` … 90日計画 / `docs/SETUP.md` … 公開手順
+- `docs/PLAN.md` … 90日計画 / `docs/SETUP.md` … 公開手順と現状 / `docs/X_POSTS.md` … Xの投稿予定
 - `google68e4de3ec3c192db.html` … Google Search Console の所有権確認用。**削除しない**
 - `takarat.html` / `takarat-deadline.html` … 検索流入用の解説ページ（数値を変えたら `rules.js` と合わせる）
 
