@@ -7,7 +7,7 @@
 
 ## 進捗
 - 2026-11-04（Day1）：MVPを作成・公開（https://dengennavi.github.io/sumire-techo/ ）。会員の数え方をメールからLINE友だちに変更。LINE公式アカウント @454lqgkx を開設してサイトに接続。費用0円
-- 2026-11-08（Day5）：友だち0名。LINEのアイコン・ステータスを設定。検索流入用に解説ページ2本（takarat.html / takarat-deadline.html）とsitemap.xmlを公開
+- 2026-11-08（Day5）：友だち0名。LINEのアイコン・ステータスを設定。検索流入用に解説ページ2本（takarat.html / takarat-deadline.html）とsitemap.xmlを公開。Search Console登録・2ページのインデックス登録をリクエスト。X @sumire_techo を開設
 
 ## 何を作ったか
 宝塚ファン向け非公式PWA「すみれ手帖」
@@ -33,7 +33,7 @@
 |---|---|---|
 | ホスティング（GitHub Pages） | 0円 | |
 | 会員＝LINE公式アカウント（コミュニケーションプラン） | 0円 | 予約配信で集計日前に自動で届ける |
-| Xアカウント | 0円 | 保留（運営用Gmailが作れたら） |
+| Xアカウント | 0円 | @sumire_techo（2026-11-08開設） |
 | 独自ドメイン | 0円（保留） | Day30時点で検索流入が見込めたら .com 約1,500円 |
 | 予備 | 10,000円 | Day45で未達ペースなら「登録者抽選で図書カード」等に使う判断 |
 

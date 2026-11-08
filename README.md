@@ -4,6 +4,7 @@
 
 - 公開: https://dengennavi.github.io/sumire-techo/ （main に push で反映。更新時は sw.js の VERSION を上げる）
 - LINE公式アカウント: @454lqgkx（友だち数＝会員数）
+- X: @sumire_techo
 
 - `rules.js` … タカラット制度の数値（出典・確認日つき）。制度が変わったらここだけ直す
 - `calc.js` … 計算ロジック（DOM非依存）
