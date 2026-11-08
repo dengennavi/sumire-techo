@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dengennavi.github.io/sumire-techo/sitemap.xml

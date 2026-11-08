@@ -55,7 +55,8 @@ textarea{min-height:90px}
 .st-white{background:var(--white)}.st-bronze{background:var(--bronze)}.st-silver{background:var(--silver)}.st-gold{background:var(--gold)}
 table{width:100%;border-collapse:collapse;font-size:14px}
 td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
-td.num{text-align:right;font-variant-numeric:tabular-nums}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.badge{white-space:nowrap}
 .warn{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:14px}
 details summary{cursor:pointer;font-weight:600;padding:6px 0}
 dl dt{font-weight:700;margin-top:10px}dl dd{margin:0 0 0 0;color:var(--muted)}
