@@ -2,7 +2,7 @@
 // 制度改定時はこのファイルだけ直す。必ず source を見て checkedAt を更新すること。
 export const RULES = {
   version: "2026-11",
-  checkedAt: "2026-11-04",
+  checkedAt: "2026-11-08",
   source: "https://kageki.hankyu.co.jp/customer-program/",
   yenPerPt: 100,
   // ステージ基準（公式ページ画像 chart.webp で確認）
@@ -18,15 +18,15 @@ export const RULES = {
     { id: "tomoJoin", label: "宝塚友の会に入会している", type: "flag", pt: 300, note: "入会時に300。毎年3月末のリセット対象外（退会まで有効）" },
     { id: "tomoYears", label: "友の会の継続年数", type: "count", unit: "年", ptPer: 10, capKey: "tomoYears", note: "継続年数×10（上限100）。毎年4月に加算" },
     { id: "idPlusMonths", label: "共通ID＋ の利用月数（今年度）", type: "count", unit: "か月", ptPer: 7, max: 12, note: "月7。入会・継続の翌日に加算" },
-    { id: "ticketYen", label: "Webチケットサービス 購入額", type: "yen", capKey: "ticket", note: "100円→1、上限1,000（10万円）。申込ではなく購入が対象。観劇日の翌日以降に加算" },
+    { id: "ticketYen", label: "Webチケットサービス 購入額", type: "yen", capKey: "ticket", note: "100円→1、上限1,000（10万円）。申込ではなく購入が対象（リセールは最終購入者のみ）。観劇日の翌日以降に加算" },
     { id: "quatreStoreYen", label: "キャトルレーヴ 店舗", type: "yen", capKey: "quatre", note: "会員証（Pocket）提示が必要。購入日の翌日に加算。オンラインと合算で上限1,000" },
-    { id: "quatreOnlineYen", label: "キャトルレーヴ オンライン", type: "yen", capKey: "quatre", note: "発送日の1か月後以降に加算。送料・手数料・eGiftは対象外" },
+    { id: "quatreOnlineYen", label: "キャトルレーヴ オンライン", type: "yen", capKey: "quatre", note: "発送日の1か月後以降に加算（電子書籍は購入日の翌日）。送料・手数料・eGiftは対象外" },
     { id: "squareMonths", label: "タカスク 月額プラン 利用月数", type: "count", unit: "か月", ptPer: 5, max: 12, adv: true, note: "月5" },
     { id: "squareRentalYen", label: "タカスク レンタル", type: "yen", capKey: "squareRental", adv: true, note: "上限1,000" },
-    { id: "paperYen", label: "定期購読（紙版）", type: "yen", capKey: "paper", adv: true, note: "上限400（4万円）" },
-    { id: "ebooksYen", label: "ebooksタカラヅカ 定期購読", type: "yen", adv: true, note: "上限の記載なし" },
+    { id: "paperYen", label: "定期購読（紙版）", type: "yen", capKey: "paper", adv: true, note: "上限400（4万円）。初回発送日の翌日以降に加算" },
+    { id: "ebooksYen", label: "ebooksタカラヅカ 定期購読", type: "yen", adv: true, note: "上限の記載なし。初回発売日以降に加算" },
     { id: "skyYen", label: "タカラヅカ・スカイ・ステージ", type: "yen", adv: true, note: "マイページから申請が必要。3・6・9・12月下旬に加算" },
-    { id: "galleryYen", label: "My Gallery コイン購入", type: "yen", capKey: "gallery", adv: true, note: "上限1,000" },
+    { id: "galleryYen", label: "My Gallery コイン購入", type: "yen", capKey: "gallery", adv: true, note: "上限1,000（10万円）。購入日の翌日以降に加算" },
   ],
   // 集計日（月, 日）と、その後のステージ反映日
   aggregations: [[6, 30], [9, 30], [12, 31], [3, 31]],
