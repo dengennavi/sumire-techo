@@ -7,6 +7,7 @@
 
 ## 進捗
 - 2026-11-04（Day1）：MVPを作成・公開（https://dengennavi.github.io/sumire-techo/ ）。会員の数え方をメールからLINE友だちに変更。LINE公式アカウント @454lqgkx を開設してサイトに接続。費用0円
+- 2026-11-08（Day5）：友だち0名。LINEのアイコン・ステータスを設定。検索流入用に解説ページ2本（takarat.html / takarat-deadline.html）とsitemap.xmlを公開
 
 ## 何を作ったか
 宝塚ファン向け非公式PWA「すみれ手帖」
