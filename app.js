@@ -95,6 +95,7 @@ function calcView(el) {
     <h1>タカラット試算</h1>
     <p class="muted small">今年度（${a.fiscalYear}年4月〜${a.fiscalYear + 1}年3月）の利用額を入れると即時に計算します。入力は端末内にだけ保存され、外部に送信されません。</p>
     <div class="card" id="result"></div>
+    <div class="row" style="margin:-4px 0 12px"><a class="btn sm ghost" id="shareX" target="_blank" rel="noopener" href="#">試算結果をXでシェア</a></div>
     <div class="card">
       <h2 style="margin-top:0">1. 会員情報</h2>${basic.filter((i) => i.type !== "yen").map(field).join("")}
       <h2>2. 今年度の購入額（加算済みの分）</h2>${basic.filter((i) => i.type === "yen").map(field).join("")}
@@ -118,6 +119,7 @@ function calcView(el) {
     const max = 2500, pct = Math.min(100, (r.total / max) * 100);
     const targets = RULES.stages.filter((s) => s.min > r.total);
     const mp = Number(S.calc.mypagePt);
+    $("#shareX").href = shareUrl(r, hasPlan, a);
     $("#mini").innerHTML = `<b>${num(r.total)}pt</b> <span class="badge st-${r.stage.id}">${r.stage.name}</span> ${r.next ? `<span class="small">${r.next.name}まであと${num(r.toNext)}pt</span>` : ""}`;
     $("#result").innerHTML = `
       <div class="muted">${hasPlan ? `${md(a.date)} 集計時の予測` : "現在の概算"}</div>
@@ -130,6 +132,14 @@ function calcView(el) {
       ${mp ? `<div class="warn small">マイページ ${num(mp)}pt との差：${mp - now.total >= 0 ? "+" : ""}${num(mp - now.total)}pt。${mp < now.total ? "加算待ち（観劇前・発送待ち等）の可能性があります。" : "入力漏れがないか確認してください。"}</div>` : ""}
       <details><summary>内訳</summary><table>${r.lines.filter((l) => l.raw > 0).map((l) => `<tr><td>${esc(l.label)}</td><td class="num">${num(l.pt)}${l.cap != null ? ` / ${num(l.cap)}` : ""}${l.capped ? " 上限" : ""}</td></tr>`).join("") || "<tr><td>まだ入力がありません</td></tr>"}</table></details>
     `;
+  };
+  // 金額は載せず、ステージと残りptだけをシェア（入力内容は送信しない）
+  const shareUrl = (r, hasPlan, a) => {
+    const url = CONFIG.siteUrl || location.origin + location.pathname;
+    const head = hasPlan ? `${md(a.date)}の集計で${r.stage.name}相当の見込み` : `いま${r.stage.name}相当`;
+    const next = r.next ? `。${r.next.name}まであと${num(r.toNext)}pt` : "";
+    const text = `【タカラット試算】${head}${next}。次の集計日まであと${a.days}日（概算）`;
+    return `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent(CONFIG.hashtag + ",タカラット")}`;
   };
   const planHtml = (p) => `
     <div class="card" style="margin:8px 0;background:var(--soft);border:0">
