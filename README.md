@@ -9,6 +9,7 @@
 - `rules.js` … タカラット制度の数値（出典・確認日つき）。制度が変わったらここだけ直す
 - `calc.js` … 計算ロジック（DOM非依存）
 - `app.js` … 画面
+- `scripts/watch-news.mjs` … 宝塚公式ニュースを1時間ごとに見て、チケット・抽選のお知らせをLINE友だちに送る（`.github/workflows/news-watch.yml`。既読は `data/news-seen.json`。GitHubのSecretsに `LINE_CHANNEL_ACCESS_TOKEN` が要る）
 - `gas/line-count.gs` … （任意）LINE友だち数の表示用中継
 - `docs/LINE_MESSAGES.md` … LINE予約配信の文面
 - `docs/PLAN.md` … 90日計画 / `docs/SETUP.md` … 公開手順と現状 / `docs/X_POSTS.md` … Xの投稿予定
