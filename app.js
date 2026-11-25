@@ -69,7 +69,7 @@ function home(el) {
 }
 function memberCta() {
   if (S.line?.added) return `<div class="card"><b>LINEで集計日のお知らせを受け取り中</b> <span class="muted small">${esc(S.line.nickname || "")}</span><div class="row"><a class="btn sm ghost" href="#member">創立メンバー証を見る</a></div></div>`;
-  return `<div class="card"><b>創立メンバー 100名募集中</b><div class="muted small">LINEで友だち追加すると、タカラット集計日の約1週間前にお知らせが届きます。無料・ブロックで即解除。<span data-counter></span></div><div class="row" style="margin-top:8px"><a class="btn" href="#member">LINEで受け取る</a></div></div>`;
+  return `<div class="card"><b>創立メンバー 100名募集中</b><div class="muted small">宝塚の抽選・先行販売が公式に出たら、LINEでいちばんに知らせます（無料・いつでも解除OK）。タカラット集計日の約1週間前にもお知らせします。<span data-counter></span></div><div class="row" style="margin-top:8px"><a class="btn" href="#member">LINEで受け取る</a></div></div>`;
 }
 async function fillCounter(el) {
   const slot = el.querySelector("[data-counter]"); if (!slot || !CONFIG.countUrl) return;
@@ -296,8 +296,10 @@ function member(el) {
   el.innerHTML = `
     <h1>創立メンバー（無料）</h1>
     <div class="card">
-      <p style="margin-top:0"><b>LINEで友だち追加するだけ。先着100名の「創立メンバー」を募集しています。</b></p>
+      <p style="margin-top:0"><b>宝塚の抽選・先行販売が公式に出たら、LINEでいちばんに知らせます（無料・いつでも解除OK）</b></p>
+      <p class="small" style="margin-top:0">LINEで友だち追加するだけ。先着100名の「創立メンバー」を募集しています。</p>
       <ul class="small" style="padding-left:20px">
+        <li>友の会・共通ID＋の<b>抽選</b>や<b>一般前売</b>のお知らせが宝塚公式に出たら、すぐ届く（1時間ごとに確認）</li>
         <li>タカラット<b>集計日の約1週間前</b>にお知らせ（年4回＋締切が近いときだけ）</li>
         <li>オンライン購入の加算タイミングなど、知らないと損する締切情報</li>
         <li>新機能を先に試せる・要望をLINEで直接届けられる</li>
