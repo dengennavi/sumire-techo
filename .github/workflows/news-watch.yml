@@ -19,7 +19,8 @@ jobs:
           node-version: 24
       - name: 公式ニュースを確認してLINEに送る
         env:
-          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_CHANNEL_ID: ${{ secrets.LINE_CHANNEL_ID }}
+          LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
         run: node scripts/watch-news.mjs
       - name: 既読の記録を保存
         if: always()

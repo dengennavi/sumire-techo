@@ -2,7 +2,7 @@
 // 使い方:
 //   node scripts/watch-news.mjs --seed     今あるお知らせを「既読」にするだけ（送らない）
 //   node scripts/watch-news.mjs --dry-run  送る文面を表示するだけ
-//   LINE_CHANNEL_ACCESS_TOKEN=... node scripts/watch-news.mjs  本番（GitHub Actions から1時間ごと）
+//   LINE_CHANNEL_ID=... LINE_CHANNEL_SECRET=... node scripts/watch-news.mjs  本番（GitHub Actions から1時間ごと）
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { NEWS_URL, parseNews, isTicketNews, buildMessage } from './news-parse.mjs';
@@ -21,10 +21,25 @@ async function saveSeen(ids) {
   await writeFile(STATE, JSON.stringify({ updated: new Date().toISOString(), seen: [...ids].sort() }, null, 1) + '\n');
 }
 
+// 鍵：LINE_CHANNEL_ID と LINE_CHANNEL_SECRET から15分だけ使える鍵をその都度作る（長期トークンがあればそれを使う）
+let token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
+async function getToken() {
+  if (token) return token;
+  const { LINE_CHANNEL_ID: id, LINE_CHANNEL_SECRET: secret } = process.env;
+  if (!id || !secret) return null;
+  const res = await fetch('https://api.line.me/oauth2/v3/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ grant_type: 'client_credentials', client_id: id, client_secret: secret }),
+  });
+  if (!res.ok) throw new Error(`LINE token ${res.status}: ${await res.text()}`);
+  return (token = (await res.json()).access_token);
+}
+
 async function line(path, init = {}) {
   const res = await fetch('https://api.line.me' + path, {
     ...init,
-    headers: { Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`, 'Content-Type': 'application/json', ...init.headers },
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', ...init.headers },
   });
   const text = await res.text();
   if (!res.ok) throw new Error(`LINE ${path} ${res.status}: ${text}`);
@@ -51,9 +66,9 @@ if (fresh.length) {
   const text = buildMessage(fresh);
   console.log('---\n' + text + '\n---');
   if (dryRun) process.exit(0);
-  if (!process.env.LINE_CHANNEL_ACCESS_TOKEN) {
+  if (!(await getToken())) {
     // 鍵の登録前は失敗にしない（毎時の失敗メールを出さない）。既読にもせず、登録後に送る
-    console.log('LINE_CHANNEL_ACCESS_TOKEN が未登録なので送らない');
+    console.log('LINEの鍵が未登録なので送らない');
     process.exit(0);
   }
   const quota = await line('/v2/bot/message/quota');
