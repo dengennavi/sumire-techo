@@ -45,3 +45,12 @@ https://dengennavi.github.io/sumire-techo/takarat-deadline.html
 https://dengennavi.github.io/sumire-techo/#calc
 #宝塚 #タカラット
 ```
+
+## 11/26(木) 20時　抽選お知らせ開始の告知　【未予約】
+```
+宝塚の「抽選はじまってた…」をなくしたい。
+公式に友の会・共通ID＋の抽選や一般前売のお知らせが出たら、すみれ手帖のLINEにすぐ届くようにしました（1時間ごとに確認・無料）
+👇友だち追加
+https://line.me/R/ti/p/@454lqgkx
+#宝塚 #タカラット
+```
